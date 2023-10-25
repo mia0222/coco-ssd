@@ -8,13 +8,17 @@ let children = [];
 startCameraButton.addEventListener('click', initializeCamera);
 
 async function initializeCamera() {
-    const stream = await navigator.mediaDevices.getUserMedia({ video: true });
-    cameraFeed.srcObject = stream;
-    startCameraButton.style.display = 'none';
-    cameraFeed.style.display = 'block';
+    try {
+        const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+        cameraFeed.srcObject = stream;
+        startCameraButton.style.display = 'none';
+        cameraFeed.style.display = 'block';
 
-    model = await cocoSsd.load();
-    detectFrame();
+        model = await cocoSsd.load();
+        detectFrame();
+    } catch (error) {
+        console.error('カメラアクセスエラー: ', error);
+    }
 }
 
 function detectFrame() {
